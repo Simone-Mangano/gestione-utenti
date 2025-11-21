@@ -14,6 +14,7 @@ import org.exi.demo.model.Utente;
 import org.exi.demo.repository.UtenteRepo;
 import org.exi.demo.service.definition.UtenteService;
 import org.exi.demo.service.impl.UtenteServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -33,6 +34,13 @@ class UtenteServiceImplTest {
     @Autowired
     private UtenteService utenteService;
 
+    @BeforeEach
+    void cleanDb() {
+        // Pulisce la tabella prima di ogni test,
+        // così i test non si "sporcano" tra di loro
+        utenteRepo.deleteAll();
+    }
+
     private Utente nuovoUtente(String cf) {
         Utente u = new Utente();
         u.setNome("Simone");
@@ -44,21 +52,21 @@ class UtenteServiceImplTest {
 
     @Test
     void create() {
-        
-    	//preparazione
+
+        // preparazione
         Utente u = nuovoUtente("MRARSS90A01H501X");
 
-        //azione
+        // azione
         Utente saved = utenteService.create(u);
 
-        //risultato
+        // risultato
         assertNotNull(saved.getId());
         assertEquals("MRARSS90A01H501X", saved.getCodiceFiscale());
     }
 
     @Test
     void createCfDuplicate() {
-    
+
         Utente u1 = nuovoUtente("DPLCFX90A01H501X");
         utenteService.create(u1);
 
@@ -71,7 +79,7 @@ class UtenteServiceImplTest {
 
     @Test
     void searchExactOk() {
-        
+
         Utente u = nuovoUtente("SRCFND90A01H501X");
         utenteService.create(u);
 
