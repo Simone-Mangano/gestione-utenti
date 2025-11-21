@@ -8,3 +8,10 @@
 *.log
 *.iml
 .DS_Store
+# Eclipse / STS files
+.classpath
+.project
+.settings/
+
+# Misc
+HELP.md
